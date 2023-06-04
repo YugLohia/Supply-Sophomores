@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="./my-app/build/static/css/main.073c9b0a.css">
     <style>
         *{
             margin: 0;
@@ -16,7 +18,7 @@
         
         body{
             font-family: 'Poppins', sans-serif;
-            background-color: #FFF5B8;
+            background-color: #FFE79B;
         }
 
         nav{
@@ -124,7 +126,7 @@
                     <li><a href="./services.html">Services</a></li>
                     <li><a href="./about.html">About</a></li>
                     <li><a href="./contact.html">Contact</a></li>
-                    <li><a href="">Login/Sign Up</a></li>
+                    <li><a href="./login.html">Login/Sign Up</a></li>
                 </ul>
             </div>
         </nav>
@@ -133,20 +135,65 @@
         <div class="hero-content">
           <h1 class="hero-title">Track Your Goods with Ease</h1>
           <p class="hero-description">Enter your tracking number to get real-time updates on your package.</p>
-          <form class="tracking-form">
-            <input type="text" class="tracking-input" placeholder="Enter Tracking ID" size="40px">
+          <form id="tracking-form" class="tracking-form">
+            <input type="text" id="tracking-input" class="tracking-input" placeholder="Enter Tracking ID" size="40px">
             <button type="submit" class="track-button">Track</button>
           </form>
         </div>
       </section>
       <footer>
-        <div class="tracking-results">
-            <h2 class="tracking-status">Current Status: Out for Delivery</h2>
-            <p class="tracking-details">Location: Warehouse B</p>
-            <p class="tracking-details">Estimated Delivery Date: June 10, 2023</p>
-            <!-- Additional tracking details can be added here -->
-          </div>
+        <div id="tracking-results" class="tracking-results">
+            <h2 id="tracking-status" class="tracking-status">Current Status: </h2>
+            <p id="tracking-details" class="tracking-details">Location: </p>
+            <p id="estimated-delivery" class="tracking-details">Estimated Delivery Date: </p>
+        </div>
           
-      </footer>      
+      </footer>
+      <script src="./my-app/build/static/js/787.28cb0dcd.chunk.js"></script>
+      <script src="./my-app/build/static/js/main.46f5c8f5.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+     <script>
+        const form = document.getElementById('tracking-form');
+        const input = document.getElementById('tracking-input');
+        const statusElement = document.getElementById('tracking-status');
+        const detailsElement = document.getElementById('tracking-details');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const trackingNumber = input.value.trim();
+            if (trackingNumber !== '') {
+                // Make the API request using Axios
+                axios.get('https://developer.dhl.com/user/51666/apps/supply_sophomores', {
+                    params: {
+                        trackingNumber: trackingNumber
+                    },
+                    headers: {
+                        'DHL-API-Key': '5JB1oqiIe2dPgReVb3MuNGnxA8cBCaik'
+                    },
+                    auth: {
+                        username: 'sahilmakhija03',
+                        password: 'Buddy@2508'
+                    }
+                })
+                .then(response => {
+                    // Process the response and update the tracking results
+                    const data = response.data;
+                    const status = data.status;
+                    const location = data.location;
+                    const estimatedDeliveryDate = data.estimatedDeliveryDate;
+
+                    statusElement.textContent = `Current Status: ${status}`;
+                    detailsElement.textContent = `Location: ${location}, Estimated Delivery Date: ${estimatedDeliveryDate}`;
+                })
+                .catch(error => {
+                    // Handle any errors that occur during the API request
+                    console.log('Error retrieving tracking information:', error);
+                    console.log('Error stack trace:', error.stack);
+                    statusElement.textContent = 'Error retrieving tracking information.';
+                    detailsElement.textContent = '';
+                });
+            }
+        });
+    </script>
 </body>
 </html>

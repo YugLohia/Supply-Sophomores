@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supply Sophomores</title>
+    <title>Contact Us</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
         
         body{
             font-family: 'Poppins', sans-serif;
-            background-color: #FFF5B8;
+            background-color: #FFE79B;
         }
 
         nav{
@@ -51,6 +51,94 @@
         nav ul li a:hover{
             color: rgb(38, 38, 100);
             font-size: 1.01rem;
+            background-color: #C38154;
+        }
+
+        .container{
+            width: 80%;
+            margin: 50px auto;
+        }
+
+        .contact-box{
+            background: #fff;
+            display: flex;
+        }
+
+        .contact-left{
+            flex-basis: 60%;
+            padding: 40px 60px; 
+        }
+
+        .contact-right{
+            flex-basis: 60%;
+            padding: 40px 60px; 
+            background: #F9E0BB;
+            color: black;
+        }
+
+        h1{
+            margin-bottom: 10px;
+        }
+
+        .container p{
+            margin-bottom: 40px;
+        }
+
+        .input-row{
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .input-row .input-group{
+            flex-basis: 45%;
+        }
+
+        input{
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            outline: none;
+            padding: 5px;
+        }
+
+        textarea{
+            width: 100%;
+            border: 1px solid #ccc;
+            outline: none;
+            padding: 10px;
+            box-sizing: border-box  ;
+        }
+
+        label{
+            margin-bottom: 6px;
+            display: block;
+            color: black;
+        }
+
+        button{
+            background: #F9E0BB;
+            width: 100px;
+            border: none;
+            outline: none;
+            color: black;
+            height: 35px;
+            border-radius: 30px;
+            margin-top: 20px;
+            box-shadow: 0px 5px 15px 0px rgba(28,0,181,0.3);
+            font-weight: 600;
+        }
+
+        .contact-left h3{
+            margin-bottom: 30px;
+        }
+
+        tr td:first-child{
+            padding-right: 20px;
+        }
+
+        tr td{
+            padding-top: 20px;
         }
 
     </style>
@@ -66,7 +154,7 @@
                     <li><a href="./services.html">Services</a></li>
                     <li><a href="./about.html">About</a></li>
                     <li><a href="./contact.html">Contact</a></li>
-                    <li><a href="">Login/Sign Up</a></li>
+                    <li><a href="./login.html">Login/Sign Up</a></li>
                 </ul>
             </div>
         </nav>
@@ -74,13 +162,53 @@
     <main>
         <div class="container">
             <h1>Connect with us</h1>
-            <p>We would love to respond to your queries and help you succeed. Feel free to get in touch with us</p>
+            <p>We would love to respond to your queries and help you succeed. <br>Feel free to get in touch with us</p>
             <div class="contact-box">
                 <div class="contact-left">
                     <h3>Send your request</h3>
+                    <form>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>Name</label>
+                                <input type="text" placeholder="Tony Stark">
+                            </div>
+                            <div class="input-group">
+                                <label>Phone</label>
+                                <input type="text" placeholder="+91 9876543210">
+                            </div>
+                        </div>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>Email</label>
+                                <input type="text" placeholder="abc123@gmail.com">
+                            </div>
+                            <div class="input-group">
+                                <label>Subject</label>
+                                <input type="text" placeholder="Query">
+                            </div>
+                        </div>
+
+                        <label>Message</label>
+                        <textarea rows="5" placeholder="Your Message"></textarea>
+                        <button type="submit">SEND</button>
+                    </form>
                 </div>
                 <div class="contact-right">
                     <h3>Reach us</h3>
+                    <table>
+                        <tr>
+                            <td>Email</td>
+                            <td>yug.lohia2021@vitstudent.ac.in</td>
+                        </tr>
+                        <tr>
+                            <td>Phone</td>
+                            <td>+91 9876543210</td>
+                        </tr>
+                        <tr>
+                            <td>Address</td>
+                            <td>VELLORE INSTITUTE OF TECHNOLOGY, VELLORE</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
