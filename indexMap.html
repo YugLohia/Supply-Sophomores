@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
+    integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
+    crossorigin=""/>
+   <title>Map User Location</title>
+</head>
+<body>
+  
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
+integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
+crossorigin=""></script>
+<script src="./scriptMap.js"></script>
+<style>
+#map { height: 350px; }
+</style>
+<main>
+<div id="map"></div>
+</main>
+<script>
+const map = L.map('map').setView([51.505, -0.09], 13);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+
+let marker, circle, zoomed, polyline;
+
+navigator.geolocation.watchPosition(success, error);
+
+function success(pos) {
+  const lat = pos.coords.latitude;
+  const lon = pos.coords.longitude;
+  const accuracy = pos.coords.accuracy;
+  if (marker) {
+    map.removeLayer(marker);
+    map.removeLayer(circle);
+  }
+  marker = L.marker([lat, lon]).addTo(map);
+  circle = L.circle([lat, lon], { radius: accuracy }).addTo(map);
+  if (!zoomed) {
+    zoomed = map.fitBounds(circle.getBounds()); 
+  }
+  map.setView([lat, lon]);
+}
+
+function error(err) {
+  if (err.code === 1) {
+    alert("Please allow geolocation access");
+  } else {
+    alert("Cannot get current location");
+  }
+}
+
+function markAddress() {
+  const addressInput = document.getElementById('address-input');
+  const address = addressInput.value;
+  
+  const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json`;
+
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+    if (data.length > 0) {
+      const lat = parseFloat(data[0].lat);
+      const lon = parseFloat(data[0].lon);
+
+      if (marker) {
+        map.removeLayer(marker);
+      }
+
+      marker = L.marker([lat, lon]).addTo(map);
+      map.setView([lat, lon]);
+    } else {
+      alert('Location not found');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('An error occurred while processing the request');
+  });
+}
+
+// function drawPath(start, end) {
+//   if (start && end) {
+//     const accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN'; // Replace with your Mapbox access token
+//     const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${encodeURIComponent(start)};${encodeURIComponent(end)}?access_token=${accessToken}`;
+
+//     fetch(url)
+//       .then(response => response.json())
+//       .then(data => {
+//         if (data.routes && data.routes.length > 0) {
+//           const coordinates = data.routes[0].geometry.coordinates;
+
+//           if (polyline) {
+//             map.removeLayer(polyline);
+//           }
+
+//           polyline = L.polyline(coordinates, { color: 'blue' }).addTo(map);
+//           map.fitBounds(polyline.getBounds());
+//         } else {
+//           alert('No path found');
+//         }
+//       })
+//       .catch(error => {
+//         console.error('Error:', error);
+//         alert('An error occurred while processing the request');
+//       });
+//   }
+// }
+
+</script>
+<input type="text" id="address-input" placeholder="Enter an address">
+<button onclick="markAddress()">Mark Location</button>
+<!--
+<input type="text" id="start-input" placeholder="Enter starting address">
+<input type="text" id="end-input" placeholder="Enter ending address">
+<button onclick="markAddress()">Mark Location</button>
+<button onclick="drawPath(document.getElementById('start-input').value, document.getElementById('end-input').value)">Draw Path</button>
+-->
+</body>
+</html>
